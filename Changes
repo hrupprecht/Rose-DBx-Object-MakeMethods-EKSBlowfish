@@ -1,4 +1,6 @@
 Revision history for Rose-DBx-Object-MakeMethods-EKSBlowfish
 
+0.02    2013-02-05
+        Works with passwords containing the heading eks blowfish identifier.
 0.01    2013-01-28
-        First version, released on an unsuspecting world.
+        First version.

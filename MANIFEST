@@ -9,7 +9,6 @@ META.json
 META.yml
 README
 README.pod
-Rose-DBx-Object-MakeMethods-EKSBlowfish-0.02.tar.gz
 t/01-password.t
 t/boilerplate.t
 t/lib/User.pm
