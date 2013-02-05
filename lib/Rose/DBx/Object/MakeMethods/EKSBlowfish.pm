@@ -10,7 +10,7 @@ Rose::DB::Object::Metadata->_column_type_class(
     eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish' 
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Rose::Object::MakeMethods;
 our @ISA = qw(Rose::Object::MakeMethods);
@@ -21,6 +21,7 @@ use Rose::DB::Object::Constants
 sub eksblowfish
 {
   my($class, $name, $args) = @_;
+  my $eks_sign = qr /^\$2a?\$\d{2}\$/;
 
   my $key = $args->{'hash_key'} || $name;
   my $interface = $args->{'interface'} || 'get_set';
@@ -50,7 +51,7 @@ sub eksblowfish
 
       if(defined $_[0])
       {
-        if(index($_[0], '$') == 0)
+        if(($_[0] =~ $eks_sign) && length($_[0]) > 57)
         {
           $self->{$key} = undef;
           return $self->{$encrypted} = shift;
@@ -74,7 +75,7 @@ sub eksblowfish
             ($self->{STATE_IN_DB()} && !($self->{SET_COLUMNS()}{$column_name} || $self->{$mod_columns_key}{$column_name})))))
       #if(!defined $self->{$encrypted} && defined $default)
       {
-        if(index($default, '$') == 0)
+        if(($_[0] =~ $eks_sign) && length($_[0]) > 57)
         {
           $self->{$encrypted} = $default;
         }
@@ -99,7 +100,7 @@ sub eksblowfish
       $self->{$mod_columns_key}{$column_name} = 1
         unless($self->{STATE_LOADING()});
 
-      if(!defined $_[0] || index($_[0], '$') == 0)
+      if(!defined $_[0] || (($_[0] =~ $eks_sign) && length($default) > 57))
       {
         return $self->{$encrypted} = shift;
       }
@@ -115,7 +116,7 @@ sub eksblowfish
           ($self->{STATE_IN_DB()} && !($self->{SET_COLUMNS()}{$column_name} || $self->{$mod_columns_key}{$column_name})))))
     #if(!defined $self->{$encrypted} && defined $default)
     {
-      if(index($default, '$') == 0)
+      if(($default =~ $eks_sign) && length($default) > 57)
       {
         $self->{$encrypted} = $default;
       }
@@ -146,7 +147,7 @@ sub eksblowfish
             ($self->{STATE_IN_DB()} && !($self->{SET_COLUMNS()}{$column_name} || $self->{$mod_columns_key}{$column_name})))))
     #if(!defined $crypted && defined $default)
     {
-      if(index($default, '$') == 0)
+      if(($default =~ $eks_sign) && length($default) > 57)
       {
         $crypted = $self->{$encrypted} = $default;
       }
@@ -171,7 +172,7 @@ sub eksblowfish
   };
 
   return \%methods;
-}
+} 
 
 
 
@@ -185,6 +186,7 @@ sub _encrypt {
   $cost = sprintf("%02i", 0+$cost);
 
   # It must begin with "$2",  optional "a", "$", two digits, "$"
+  # /^\$2a?\$\d{2}\$/
   my $settings_base = join('','$2',$nul,'$',$cost, '$');
 
   my $encoder = sub {
@@ -197,7 +199,7 @@ sub _encrypt {
     return bcrypt($plain_text, $settings_str);
   };
   return $encoder->($pass);
-}
+} 
 
 1;
 
