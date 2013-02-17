@@ -18,7 +18,7 @@ my $builder = Module::Build->new(
     },
     requires => {
         'Rose::DB'                     => 0.770,
-        'Rose::DB::Object'             => 0.803,
+        'Rose::DB::Object'             => 0.804,
         'Crypt::Eksblowfish::Bcrypt'   => 0.009,
     },
     add_to_cleanup     => [ 'Rose-DBx-Object-MakeMethods-EKSBlowfish-*' ],
