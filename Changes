@@ -1,5 +1,8 @@
 Revision history for Rose-DBx-Object-MakeMethods-EKSBlowfish
 
+0.03    2013-02-19
+        Fixes bug in accessing metadata.
+        Some changes in tests.
 0.02    2013-02-05
         Works with passwords containing the heading eks blowfish identifier.
 0.01    2013-01-28

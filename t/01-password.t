@@ -48,72 +48,76 @@ cmp_ok($user->id,'==',1,'create user in testdb ok');
 subtest 'check password' => sub {
 
    my $cmp_user = User->new(
+      db => $db,
       name => $username,
    )->load;
 
-     is( $cmp_user->password_is( $password),1,'password matched');
-   isnt( $cmp_user->password_is(!$password),1,'password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
-   diag 'change password now';
-   $cmp_user->password('Yes I know');
+   $password = 'Yes I know';
+   $cmp_user->password($password);
    $cmp_user->save;
 
-     is( $cmp_user->password_is( 'Yes I know'),1,'changed password matched');
-   isnt( $cmp_user->password_is(!'Yes I know'),1,'changed password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
 };
 
 subtest 'check password starting with $' => sub {
 
    my $cmp_user = User->new(
+      db => $db,
       name => $username,
    )->load;
 
-     is( $cmp_user->password_is( $password),1,'password matched');
-   isnt( $cmp_user->password_is(!$password),1,'password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
-   diag 'change password now';
-   $cmp_user->password('$Yes I know');
+   $password = '$Yes I know';
+   $cmp_user->password($password);
    $cmp_user->save;
 
-     is( $cmp_user->password_is( '$Yes I know'),1,'changed password matched');
-   isnt( $cmp_user->password_is(!'$Yes I know'),1,'changed password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
 };
 
 subtest 'check password starting with a eks signature' => sub {
 
    my $cmp_user = User->new(
+      db => $db,
       name => $username,
    )->load;
 
-     is( $cmp_user->password_is( $password),1,'password matched');
-   isnt( $cmp_user->password_is(!$password),1,'password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
-   diag 'change password now';
-   $cmp_user->password('$2a$12$Yes I know');
+   $password = '$2a$12$Yes I know';
+   $cmp_user->password($password);
    $cmp_user->save;
 
-     is( $cmp_user->password_is( '$2a$12$Yes I know'),1,'changed password matched');
-   isnt( $cmp_user->password_is(!'$2a$12$Yes I know'),1,'changed password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
 };
 
 subtest 'check password starting with another eks signature' => sub {
 
    my $cmp_user = User->new(
+      db => $db,
       name => $username,
    )->load;
 
-     is( $cmp_user->password_is( $password),1,'password matched');
-   isnt( $cmp_user->password_is(!$password),1,'password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
-   diag 'change password now';
-   $cmp_user->password('$2$12$Yes I know');
+   $password = '$2$12$Yes I know';
+   $cmp_user->password($password);
    $cmp_user->save;
 
-     is( $cmp_user->password_is( '$2$12$Yes I know'),1,'changed password matched');
-   isnt( $cmp_user->password_is(!'$2$12$Yes I know'),1,'changed password mismatched');
+   is( $cmp_user->password_is($password ),1,'password matched');
+   is( $cmp_user->password_is('anything'),0,'password mismatched');
 
 };
 done_testing;

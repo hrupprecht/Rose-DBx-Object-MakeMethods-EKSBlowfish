@@ -3,14 +3,15 @@ package Rose::DBx::Object::MakeMethods::EKSBlowfish;
 use 5.006;
 use strict;
 use warnings FATAL => 'all';
+use Rose::DB::Object::Metadata;
 use Crypt::Eksblowfish::Bcrypt qw /bcrypt en_base64/;
 
 use Rose::DBx::Object::Metadata::Column::EKSBlowfish;
-Rose::DB::Object::Metadata->_column_type_class( 
+Rose::DB::Object::Metadata->column_type_class( 
     eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish' 
 );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Rose::Object::MakeMethods;
 our @ISA = qw(Rose::Object::MakeMethods);
@@ -137,7 +138,7 @@ sub eksblowfish
 
     if(defined $pass)
     {
-      return ($check eq $pass) ? 1 : 0;
+       return ($check eq $pass) ? 1 : 0;
     }
 
     my $crypted = $self->{$encrypted};
@@ -329,7 +330,8 @@ Example:
            key_nul   => 0,
          },
        ],
-    );
+    );:w
+
     
     __PACKAGE__->meta->setup(
         db => $db,
@@ -374,7 +376,7 @@ Holger Rupprecht (holger.rupprecht@gmx.de)
 
 =head1 LICENSE
 
-Copyright (c) 2010 by Holger Rupprecht.  All rights reserved.  This program is
+Copyright (c) 2013 by Holger Rupprecht.  All rights reserved.  This program is
 free software; you can redistribute it and/or modify it under the same terms
 as Perl itself.
 

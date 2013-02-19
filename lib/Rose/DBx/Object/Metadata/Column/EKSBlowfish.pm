@@ -6,7 +6,7 @@ use strict;
 use Rose::DB::Object::Metadata::Column;
 our @ISA = qw(Rose::DB::Object::Metadata::Column);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 __PACKAGE__->add_common_method_maker_argument_names('encrypted_suffix', 'cmp_suffix');
 
@@ -83,6 +83,6 @@ Holger Rupprecht (holger.rupprecht@gmx.de)
 
 =head1 COPYRIGHT
 
-Copyright (c) 2008 by Holger Rupprecht.  All rights reserved.  This program is
+Copyright (c) 2013 by Holger Rupprecht.  All rights reserved.  This program is
 free software; you can redistribute it and/or modify it under the same terms
 as Perl itself.
