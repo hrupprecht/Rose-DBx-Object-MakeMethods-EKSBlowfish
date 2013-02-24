@@ -11,7 +11,7 @@ Rose::DB::Object::Metadata->column_type_class(
     eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish' 
 );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Rose::Object::MakeMethods;
 our @ISA = qw(Rose::Object::MakeMethods);
@@ -191,7 +191,7 @@ sub _encrypt {
   $nul = $nul ? 'a' : '';
   $cost = sprintf("%02i", 0+$cost);
 
-  # It must begin with "$2",  optional "a", "$", two digits, "$"
+  # It must begin with "$2",  optional "a", bcrypt identifier, two digits, bcrypt identifier
   # /^\$2a?\$\d{2}\$/
   my $settings_base = join('','$2',$nul,'$',$cost, '$');
 
@@ -217,7 +217,7 @@ Rose::DB::Object::MakeMethods::EKSBlowfish - Create Blowfish-specific object met
 
 =head1 VERSION
 
-Version 0.01
+Version 0.04
 
 =head1 SYNOPSIS
 
@@ -299,9 +299,9 @@ Creates a family of methods for handling eksblowfish encrypted passwords.  The m
 
 The get/set method for the unencrypted value.  (This method uses the default method name.)  If called with no arguments, the unencrypted value is returned, if it is known.  If not, undef is returned.
 
-If passed an argument that begins with "$", it is assumed to be an encrypted value and is stored as such.  Undef is returned, since it is not feasible to determine the unencrypted value based on the encrypted value.
+If passed an argument that begins with bcrypt identifier, it is assumed to be an encrypted value and is stored as such.  Undef is returned, since it is not feasible to determine the unencrypted value based on the encrypted value.
 
-If passed an argument that does not begin with "$", it is taken as the unencrypted value. 
+If passed an argument that does not begin with bcrypt identifier, it is taken as the unencrypted value. 
 
 =item C<encrypted>
 
@@ -309,9 +309,9 @@ The get/set method for the encrypted value.  The method name will be formed by c
 
 If called with no arguments, the encrypted value is returned, if it is known.  If not, undef is returned.
 
-If passed an argument that begins with "$", it is assumed to be an encrypted value and is stored as such.  The unencrypted value is set to undef, since it is not feasible to determine the unencrypted value based on the encrypted value.  The encrypted value is returned.
+If passed an argument that begins with bcrypt identifier, it is assumed to be an encrypted value and is stored as such.  The unencrypted value is set to undef, since it is not feasible to determine the unencrypted value based on the encrypted value.  The encrypted value is returned.
 
-If passed an argument that does not begin with "$", it is taken as the unencrypted value. =item C<comparison>
+If passed an argument that does not begin with bcrypt identifier, it is taken as the unencrypted value. =item C<comparison>
 
 This method compares its argument to the unencrypted value and returns true if the two values are identical (string comparison), false if they are not, and undef if both the encrypted and unencrypted values are undefined.
 

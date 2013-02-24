@@ -6,7 +6,7 @@ use strict;
 use Rose::DB::Object::Metadata::Column;
 our @ISA = qw(Rose::DB::Object::Metadata::Column);
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 __PACKAGE__->add_common_method_maker_argument_names('encrypted_suffix', 'cmp_suffix');
 
@@ -26,7 +26,7 @@ sub type { 'eksblowfish' }
 
 1;
 
-=head1 NAME 
+=head1 NAME  
 
 Rose::DB::Object::Metadata::Column::EKSBlowfish - eksblowfish column metadata.
 
