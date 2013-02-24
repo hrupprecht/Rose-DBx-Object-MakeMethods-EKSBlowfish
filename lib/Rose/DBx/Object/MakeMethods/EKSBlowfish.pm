@@ -135,13 +135,18 @@ sub eksblowfish
     my($self, $check) = @_;
 
     my $pass = $self->{$key};
+    my $crypted = $self->{$encrypted};
 
     if(defined $pass)
     {
-       return ($check eq $pass) ? 1 : 0;
+      if(bcrypt($check, $crypted) eq $crypted)
+      {
+         $self->{$key} = $check;
+        return 1;
+      }
+      return 0;
     }
 
-    my $crypted = $self->{$encrypted};
 
     unless(!defined $default || defined $crypted ||
            ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} || 
