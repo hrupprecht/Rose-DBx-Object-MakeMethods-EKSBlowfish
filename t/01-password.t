@@ -12,7 +12,7 @@ BEGIN {
     use lib 'lib';
 }
 
-plan tests => 7;
+plan tests => 9;
 
 
 our $db = Rose::DBx::TestDB->new;
@@ -44,6 +44,24 @@ $user->save;
 diag Dumper $user if $ENV{HARNESS_VERBOSE};
 cmp_ok($user->id,'==',1,'create user in testdb ok');
 
+subtest 'empty password' => sub {
+
+   my $user = User->new(
+      db => $db,
+      name => $username,
+   )->load;
+
+   is( $user->password_is(undef),0,'undef password');
+   is( $user->password_is(''),0,'empty password');
+
+};
+
+subtest 'empty password' => sub {
+
+   is( $user->password_is(undef),0,'undef password');
+   is( $user->password_is(''),0,'empty password');
+
+};
 
 subtest 'check password' => sub {
 

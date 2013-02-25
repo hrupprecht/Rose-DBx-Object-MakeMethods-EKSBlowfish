@@ -6,7 +6,7 @@ use strict;
 use Rose::DB::Object::Metadata::Column;
 our @ISA = qw(Rose::DB::Object::Metadata::Column);
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 __PACKAGE__->add_common_method_maker_argument_names('encrypted_suffix', 'cmp_suffix');
 

@@ -4,7 +4,7 @@ Rose::DB::Object::MakeMethods::EKSBlowfish - Create Blowfish-specific object met
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =head1 SYNOPSIS
 

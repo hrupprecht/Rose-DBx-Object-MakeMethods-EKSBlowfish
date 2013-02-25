@@ -17,14 +17,14 @@ name: Rose-DBx-Object-MakeMethods-EKSBlowfish
 provides:
   Rose::DBx::Object::MakeMethods::EKSBlowfish:
     file: lib/Rose/DBx/Object/MakeMethods/EKSBlowfish.pm
-    version: 0.04
+    version: 0.05
   Rose::DBx::Object::Metadata::Column::EKSBlowfish:
     file: lib/Rose/DBx/Object/Metadata/Column/EKSBlowfish.pm
-    version: 0.04
+    version: 0.05
 requires:
   Crypt::Eksblowfish::Bcrypt: 0.009
   Rose::DB: 0.77
   Rose::DB::Object: 0.804
 resources:
   license: http://www.perlfoundation.org/artistic_license_2_0
-version: 0.04
+version: 0.05
