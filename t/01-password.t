@@ -56,10 +56,14 @@ subtest 'empty password' => sub {
 
 };
 
-subtest 'empty password' => sub {
+subtest 'wrong password' => sub {
 
-   is( $user->password_is(undef),0,'undef password');
-   is( $user->password_is(''),0,'empty password');
+   my $user = User->new(
+      db => $db,
+      name => $username,
+   )->load;
+
+   is( $user->password_is('anything'),0,'wrong password');
 
 };
 

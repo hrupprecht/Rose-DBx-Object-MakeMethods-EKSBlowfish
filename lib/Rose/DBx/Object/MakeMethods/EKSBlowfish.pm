@@ -11,7 +11,7 @@ Rose::DB::Object::Metadata->column_type_class(
     eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish' 
 );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Rose::Object::MakeMethods;
 our @ISA = qw(Rose::Object::MakeMethods);
@@ -166,7 +166,7 @@ sub eksblowfish
 
     if(defined $crypted)
     {
-      if(bcrypt($check, $crypted))
+      if(bcrypt($check, $crypted) eq $crypted)
       {
         $self->{$key} = $check;
         return 1;
@@ -218,7 +218,7 @@ Rose::DB::Object::MakeMethods::EKSBlowfish - Create Blowfish-specific object met
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =head1 SYNOPSIS
 
