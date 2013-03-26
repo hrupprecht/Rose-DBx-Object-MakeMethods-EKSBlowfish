@@ -1,5 +1,6 @@
 Revision history for Rose-DBx-Object-MakeMethods-EKSBlowfish
 0.06    2013-02-25
+        added .travis.yml
         fixes load password bug
         added load password test
 0.05    2013-02-25
