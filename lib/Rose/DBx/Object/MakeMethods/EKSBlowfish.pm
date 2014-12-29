@@ -7,8 +7,8 @@ use Rose::DB::Object::Metadata;
 use Crypt::Eksblowfish::Bcrypt qw /bcrypt en_base64/;
 
 use Rose::DBx::Object::Metadata::Column::EKSBlowfish;
-Rose::DB::Object::Metadata->column_type_class( 
-    eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish' 
+Rose::DB::Object::Metadata->column_type_class(
+    eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish'
 );
 
 our $VERSION = '0.06';
@@ -16,7 +16,7 @@ our $VERSION = '0.06';
 use Rose::Object::MakeMethods;
 our @ISA = qw(Rose::Object::MakeMethods);
 
-use Rose::DB::Object::Constants 
+use Rose::DB::Object::Constants
   qw(STATE_LOADING STATE_SAVING MODIFIED_COLUMNS MODIFIED_NP_COLUMNS SET_COLUMNS STATE_IN_DB);
 
 sub eksblowfish
@@ -36,7 +36,7 @@ sub eksblowfish
 
   my $default = $args->{'default'};
 
-  my $mod_columns_key = ($args->{'column'} ? $args->{'column'}->nonpersistent : 0) ? 
+  my $mod_columns_key = ($args->{'column'} ? $args->{'column'}->nonpersistent : 0) ?
     MODIFIED_NP_COLUMNS : MODIFIED_COLUMNS;
 
   my %methods;
@@ -72,7 +72,7 @@ sub eksblowfish
 
 
       unless(!defined $default || defined $self->{$encrypted} ||
-           ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} || 
+           ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} ||
             ($self->{STATE_IN_DB()} && !($self->{SET_COLUMNS()}{$column_name} || $self->{$mod_columns_key}{$column_name})))))
       #if(!defined $self->{$encrypted} && defined $default)
       {
@@ -113,7 +113,7 @@ sub eksblowfish
     }
 
     unless(!defined $default || defined $self->{$encrypted} ||
-         ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} || 
+         ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} ||
           ($self->{STATE_IN_DB()} && !($self->{SET_COLUMNS()}{$column_name} || $self->{$mod_columns_key}{$column_name})))))
     #if(!defined $self->{$encrypted} && defined $default)
     {
@@ -150,7 +150,7 @@ sub eksblowfish
 
 
     unless(!defined $default || defined $crypted ||
-           ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} || 
+           ($undef_overrides_default && ($self->{$mod_columns_key}{$column_name} ||
             ($self->{STATE_IN_DB()} && !($self->{SET_COLUMNS()}{$column_name} || $self->{$mod_columns_key}{$column_name})))))
     #if(!defined $crypted && defined $default)
     {
@@ -179,7 +179,7 @@ sub eksblowfish
   };
 
   return \%methods;
-} 
+}
 
 
 
@@ -206,7 +206,7 @@ sub _encrypt {
     return bcrypt($plain_text, $settings_str);
   };
   return $encoder->($pass);
-} 
+}
 
 1;
 
@@ -227,9 +227,9 @@ Version 0.06
    our @ISA = qw(Rose::DB::Object);
 
    use Rose::DBx::Object::MakeMethods::EKSBlowfish(
-   eksblowfish => 
+   eksblowfish =>
       [
-        'type' => 
+        'type' =>
         {
           cost      => 8,
           key_nul   => 0,
@@ -282,7 +282,7 @@ The string appended to the default method name to form the name of the get/set m
 
 The key inside the hash-based object to use for the storage of the unencrypted value.  Defaults to the name of the method.
 
-The encrypted value is stored in a hash key with the same name, but with C<encrypted_suffix> appended.  
+The encrypted value is stored in a hash key with the same name, but with C<encrypted_suffix> appended.
 
 =back
 
@@ -302,7 +302,7 @@ The get/set method for the unencrypted value.  (This method uses the default met
 
 If passed an argument that begins with bcrypt identifier, it is assumed to be an encrypted value and is stored as such.  Undef is returned, since it is not feasible to determine the unencrypted value based on the encrypted value.
 
-If passed an argument that does not begin with bcrypt identifier, it is taken as the unencrypted value. 
+If passed an argument that does not begin with bcrypt identifier, it is taken as the unencrypted value.
 
 =item C<encrypted>
 
@@ -328,9 +328,9 @@ Example:
 
     use base qw(Rose::DB::Object);
     use Rose::DBx::Object::MakeMethods::EKSBlowfish(
-    eksblowfish => 
+    eksblowfish =>
        [
-         'type' => 
+         'type' =>
          {
            cost      => 8,
            key_nul   => 0,
@@ -338,21 +338,21 @@ Example:
        ],
     );:w
 
-    
+
     __PACKAGE__->meta->setup(
         db => $db,
         table => 'users',
-    
+
         columns => [
             id              => { type => 'serial',    not_null => 1 },
             name            => { type => 'varchar',   length   => 255, not_null => 1 },
             password        => { type => 'eksblowfish', not_null => 1, },
         ],
-    
+
         primary_key_columns => ['id'],
-    
+
         unique_key => ['name'],
-    
+
     );
 
     ...
@@ -374,7 +374,7 @@ Example:
 
 the encryption generator
 
-=back    
+=back
 
 =head1 AUTHOR
 

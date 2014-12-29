@@ -22,9 +22,9 @@ use_ok( 'User' ) || print "Bail out!\n";
 my $r = $db->dbh->do(<<EOSQL
 
 CREATE  TABLE "users" (
-   "id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 
-   "name" VARCHAR NOT NULL  UNIQUE , 
-   "password" VARCHAR NOT NULL 
+   "id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL ,
+   "name" VARCHAR NOT NULL  UNIQUE ,
+   "password" VARCHAR NOT NULL
 );
 
 EOSQL
