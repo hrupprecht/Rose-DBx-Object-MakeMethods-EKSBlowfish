@@ -8,34 +8,84 @@ Version 0.06
 
 =head1 SYNOPSIS
 
-   package MyDBObject;
-
-   our @ISA = qw(Rose::DB::Object);
-
-   use Rose::DBx::Object::MakeMethods::EKSBlowfish(
-   eksblowfish => 
-      [
-        'type' => 
-        {
-          cost      => 8,
-          key_nul   => 0,
-        },
+  package User;
+  use base qw(Rose::DB::Object);
+  use Rose::DBx::Object::MakeMethods::EKSBlowfish(
+  eksblowfish =>
+     [
+       'type' =>
+       {
+         cost      => 8,
+         key_nul   => 0,
+       },
+     ],
+  );
+  
+  __PACKAGE__->meta->setup(
+      table => 'users',
+  
+      columns => [
+          id              => { type => 'serial',    not_null => 1 },
+          name            => { type => 'varchar',   length   => 255, not_null => 1 },
+          password        => { type => 'eksblowfish', not_null => 1, },
       ],
-   );
-
+  
+      primary_key_columns => ['id'],
+  
+      unique_key => ['name'],
+  
+  );
+  
   ...
 
-  $o = MyDBObject->new(...);
+  $u = User->new(...);
 
-  $o->password('foobar');
+  $u->password('foobar');
 
   # Something like: "$2$08$NWgpob52QKA2fRUgCwB93O1qoHZGu/Kr9iGfI/2nhy9uc9R2IG9by"
-  print $o->password_encrypted;
+  print $u->password_encrypted;
 
-  print $o->password; # "foobar"
-  print "ok" if($o->password_is('foobar'); # "ok"
+  print $u->password; # "foobar"
+  print "ok" if($u->password_is('foobar'); # "ok"
+
+or use the Loader Class to generate table classes and then replace password column
+
+  # Generated table class from loader
+  package BaseUser;
+  use base qw(Rose::DB::Object);
+  
+  __PACKAGE__->meta->setup(
+      table => 'users',
+
+      columns => [
+          id              => { type => 'serial',  not_null => 1 },
+          name            => { type => 'varchar', length   => 255, not_null => 1 },
+          password        => { type => 'varchar', not_null => 1, },
+      ],
+  
+      primary_key_columns => ['id'],
+  
+      unique_key => ['name'],
+  
+  );
 
 
+  package DerivedUser;
+  
+  use base qw(BaseUser);
+  use Rose::DBx::Object::MakeMethods::EKSBlowfish(
+    eksblowfish => [
+      type => {
+        cost => 8,
+        key_nul => 0,
+      },
+    ],
+  );
+  
+  # Change the "password" column into a eksblowfish column.
+  __PACKAGE__->meta->replace_column('password' => {type => 'eksblowfish'});
+  __PACKAGE__->meta->initialize(replace_existing => 1);
+  
 =head1 DESCRIPTION
 
 C<Rose::DB::Object::MakeMethods::EKSBlowfish> creates methods that deal with eksblowfish encrypted passwords.  It inherits from L<Rose::Object::MakeMethods>.  See the L<Rose::Object::MakeMethods> documentation to learn about the interface.  The method types provided by this module are described below.
@@ -167,7 +217,7 @@ Holger Rupprecht (holger.rupprecht@gmx.de)
 
 =head1 LICENSE
 
-Copyright (c) 2010 by Holger Rupprecht.  All rights reserved.  This program is
+Copyright (c) 2014 by Holger Rupprecht.  All rights reserved.  This program is
 free software; you can redistribute it and/or modify it under the same terms
 as Perl itself.
 
