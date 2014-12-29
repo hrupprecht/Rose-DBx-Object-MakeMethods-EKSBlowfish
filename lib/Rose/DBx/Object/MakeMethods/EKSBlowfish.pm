@@ -11,7 +11,7 @@ Rose::DB::Object::Metadata->column_type_class(
     eksblowfish => 'Rose::DBx::Object::Metadata::Column::EKSBlowfish'
 );
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Rose::Object::MakeMethods;
 our @ISA = qw(Rose::Object::MakeMethods);
@@ -218,7 +218,7 @@ Rose::DB::Object::MakeMethods::EKSBlowfish - Create Blowfish-specific object met
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =head1 SYNOPSIS
 
